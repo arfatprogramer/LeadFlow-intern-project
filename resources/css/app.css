@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.dataTables_wrapper {
+    display: grid;
+    font-size: small;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border: rgb(200, 195, 195) 1px solid;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: white;
+
+}
+.dataTables_filter{
+    justify-self: end;
+}
+.dataTable{
+    width: 100%;
+grid-column: span 2;
+}
+
+.dataTables_paginate {
+    justify-self: end;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+}

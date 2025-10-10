@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\leadsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +16,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('leads', leadsController::class); // Resource route for leads
 });
 
 
-Route::get('/leads', function () {
-    return view('leads.index');
-})->middleware(['auth', 'verified'])->name('leads.index');
+
 
 Route::get('/opportunities', function () {
     return 'opportunitiesopportunities Page';
@@ -33,6 +33,5 @@ Route::get('/reminders', function () {
 Route::get('/contacts', function () {
     return view('customers');
 })->middleware(['auth', 'verified'])->name('contacts.index');
-
 
 require __DIR__.'/auth.php';
