@@ -89,3 +89,29 @@
         </div>
     </div>
 </nav>
+
+
+{{-- @php
+    $notifications = auth()->user()->unreadNotifications;
+@endphp
+
+<div class="relative">
+    <x-icon name="bell" class="w-6 h-6 text-gray-600" />
+    @if($notifications->count())
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">
+            {{ $notifications->count() }}
+        </span>
+    @endif
+</div>
+
+<!-- Dropdown -->
+<div class="absolute bg-white shadow rounded w-64">
+    @forelse($notifications as $note)
+        <a href="{{ route('leads.show', $note->data['lead_id']) }}" class="block px-4 py-2 hover:bg-gray-100">
+            {{ $note->data['message'] }}
+        </a>
+    @empty
+        <p class="px-4 py-2 text-gray-500">No notifications</p>
+    @endforelse
+</div> --}}
+

@@ -1,7 +1,7 @@
 <x-app-layout>
-    <div class="py-4">
-        <div class="p-6 bg-white rounded-xl shadow-md">
-            <div class="flex justify-between items-center mb-4">
+    <div class="">
+        <div class="p-4 bg-white rounded-xl shadow-md">
+            <div class="flex justify-between items-center ">
                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Leads List</h2>
                 <!-- Action Button -->
                 <a href={{ route('leads.create') }}> 

@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use App\Models\User;
+use App\Notifications\LeadQualifiedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class leadsController extends Controller
 {
-   
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth::user()->role=='admin') {  
+        if (in_array('admin', Auth::user()->role_names)) {  
             $leads = Lead::all(); // Fetch all leads assigned to user with ID 1
         }
         else{
@@ -66,7 +66,7 @@ class leadsController extends Controller
     public function show(string $id)
     {
        return view('leads.show', [
-            'lead' => Lead::findOrFail($id)
+            'lead' => Lead::with('users')->findOrFail($id)
         ]);
     }
 
@@ -85,7 +85,7 @@ class leadsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         Lead::findOrFail($id)->update([
+         $lead=Lead::findOrFail($id)->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -99,6 +99,7 @@ class leadsController extends Controller
             'follow_up_date' => $request->follow_up_date,
             'reminder_time' => $request->reminder_time,
         ]) ;
+
         return redirect()->route('leads.index')->with('success', 'Lead updated successfully!');
     }
 
@@ -110,5 +111,29 @@ class leadsController extends Controller
         return Lead::findOrFail($id)->delete() ? 
             redirect()->route('leads.index')->with('success', 'Lead deleted successfully!') :
             redirect()->route('leads.index')->with('error', 'Failed to delete lead.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids; // Assuming 'ids' is an array of lead IDs to delete
+        Lead::whereIn('id', $ids)->delete();
+        return response()->json(['message' => 'Selected leads deleted successfully.']);
+    }
+    public function convert(Request $request, $id)
+    {
+        $lead = Lead::findOrFail($id);
+
+        // Create an opportunity based on the lead details
+        $opportunity = $lead->opportunities()->create([
+            'title' => $lead->company ? "Opportunity for {$lead->company}" : "Opportunity for {$lead->first_name} {$lead->last_name}",
+            'value' => $request->value,
+            'stage' => 'Interested', // Initial stage
+            'details' => $request->details,
+            'assigned_to' => $lead->assigned_to,
+        ]);
+
+        // Optionally, you can change the lead status to 'Converted'
+        $lead->update(['status' => 'Converted']);
+        return redirect()->route('opportunities.show', $opportunity->id)->with('success', 'Lead converted to opportunity successfully!');
     }
 }

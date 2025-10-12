@@ -49,7 +49,7 @@
                 <div>
                     <p class="font-medium">Assigned To</p>
                     <p class="text-gray-600">
-                        {{ $lead->assignedUser->name ?? 'Unassigned' }}
+                        {{ $lead->users->name ?? 'Unassigned' }}
                     </p>
                 </div>
             </div>
@@ -84,6 +84,14 @@
                     <p class="text-gray-500 italic">No notes available.</p>
                 @endif
             </div>
+            <div class="flex justify-end mt-4">
+                <button 
+                    onclick="addNote($lead->id)"
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
+                    Add
+             </button>
+            </div>
+             
         </div>
 
         <!-- Footer -->

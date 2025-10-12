@@ -103,7 +103,7 @@
                     name="assigned_to" 
                     class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
-                    @if (auth()->user()->role === 'admin')
+                   @if (in_array('admin', Auth::user()->role_names) || in_array('manager', Auth::user()->role_names)))
                         <option value="">Select User</option>
                         @foreach (App\Models\User::all() as $user)
                             <option value="{{ $user->id }}" {{ old('assigned_to', $lead->assigned_to) == $user->id ? 'selected' : '' }}>
