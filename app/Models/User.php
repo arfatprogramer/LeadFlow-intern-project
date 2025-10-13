@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function constacts()
     {
-        return $this->hasMany(Contact::class);
+        return $this->hasMany(Contact::class, 'assigned_to');
     }
 
     // Accessor: Returns only an array of role names

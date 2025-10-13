@@ -29,6 +29,29 @@ $(document).ready(function() {
                 $('#selectAllOpportunities').on('click', function() {
                     $('.opportunity-checkbox').prop('checked', this.checked);
                 });
+
+                 let contactsTable = $('#contactsTable').DataTable({
+                    pageLength: 5,
+                    lengthMenu: [5, 10, 25, 50],
+                    responsive: true
+                });
+
+                // Select All Checkbox
+                $('#selectAllContacts').on('click', function() {
+                    $('.contact-checkbox').prop('checked', this.checked);
+                });
+
+                 let userTable = $('#usersTable').DataTable({
+                    pageLength: 5,
+                    lengthMenu: [5, 10, 25, 50],
+                    responsive: true
+                });
+
+                // Select All Checkbox
+                $('#selectAllUsers').on('click', function() {
+                    $('.user-checkbox').prop('checked', this.checked);
+                });
+
             });
 
 function addNote(id) {
