@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lead;
 use App\Models\User;
 use App\Notifications\LeadQualifiedNotification;
+use App\Notifications\tesst;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -119,21 +120,30 @@ class leadsController extends Controller
         Lead::whereIn('id', $ids)->delete();
         return response()->json(['message' => 'Selected leads deleted successfully.']);
     }
-    public function convert(Request $request, $id)
+
+    public function OpenUpdateFollowUp($id)
     {
         $lead = Lead::findOrFail($id);
+        return view('leads.update_follow_up', compact('lead'));
+    }
 
-        // Create an opportunity based on the lead details
-        $opportunity = $lead->opportunities()->create([
-            'title' => $lead->company ? "Opportunity for {$lead->company}" : "Opportunity for {$lead->first_name} {$lead->last_name}",
-            'value' => $request->value,
-            'stage' => 'Interested', // Initial stage
-            'details' => $request->details,
-            'assigned_to' => $lead->assigned_to,
+    public function updateFollowUp(Request $request, $id)
+    {
+        $request->validate([
+            'follow_up_date' => 'required|date',
+            'reminder_time' => 'nullable|',
+            'status' => 'required|string',
+            'notes' => 'required|string',
         ]);
 
-        // Optionally, you can change the lead status to 'Converted'
-        $lead->update(['status' => 'Converted']);
-        return redirect()->route('opportunities.show', $opportunity->id)->with('success', 'Lead converted to opportunity successfully!');
+        $lead = Lead::findOrFail($id);
+        $lead->follow_up_date = $request->follow_up_date;
+        $lead->reminder_time = $request->reminder_time;
+        $lead->status = $request->status;
+        $lead->notes = $request->notes;
+        $lead->save();
+
+        return redirect()->route('leads.show',$id)->with('success', 'Follow-up details updated successfully.');
     }
+
 }

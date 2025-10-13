@@ -3,6 +3,7 @@
 use App\Http\Controllers\leadsController;
 use App\Http\Controllers\OpportunitiesController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
@@ -24,7 +25,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::resource('leads', LeadsController::class);
     Route::post('leads/bulk-delete', [LeadsController::class,'bulkDestroy'])->name('leads.bulk-delete');
-    Route::post('leads/{lead}/convert', [LeadsController::class,'convert'])->name('leads.convert');
+    Route::get('leads/follo-up/{id}', [LeadsController::class,'OpenUpdateFollowUp'])->name('leads.OpenUpdateFollowUp');
+    Route::post('leads/follo-up/{id}', [LeadsController::class,'updateFollowUp'])->name('leads.updateFollowUp');
     Route::resource('opportunities', OpportunitiesController::class);
 });
 
@@ -36,5 +38,22 @@ Route::get('/reminders', function () {
 Route::get('/contacts', function () {
     return view('customers');
 })->middleware(['auth', 'verified'])->name('contacts.index');
+
+//Notifications
+Route::post('/notifications/mark-all-read', function () {
+    Auth::user()->unreadNotifications->markAsRead();
+    return back();
+})->name('notifications.markAllRead');
+
+Route::get('/markasread/{id}/{lead_id}', function ($id, $lead_id) {
+    $notification = Auth::user()->notifications()->find($id);
+
+    if ($notification) {
+        $notification->markAsRead();
+    }
+        // return back();
+    return redirect()->route('leads.show', $lead_id);
+})->name('markasread');
+
 
 require __DIR__.'/auth.php';

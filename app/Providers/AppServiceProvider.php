@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+     protected $policies = [
+                // Model::class => ModelPolicy::class,
+            ];
     /**
      * Register any application services.
      */

@@ -8,7 +8,7 @@
                     Edit
                 </a>
                 <a href="{{ route('leads.index') }}" 
-                   class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
+                   class="bg-gray-200 max-sm:hidden  hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
                     Back
                 </a>
             </div>
@@ -58,7 +58,7 @@
         <!-- Follow-up Details -->
         <div class="mb-8">
             <h2 class="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Follow-up Details</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-700">
                 <div>
                     <p class="font-medium">Follow-up Date</p>
                     <p class="text-gray-600">
@@ -71,28 +71,31 @@
                         {{ $lead->reminder_time ? \Carbon\Carbon::parse($lead->reminder_time)->format('h:i A') : '-' }}
                     </p>
                 </div>
+                <div>
+                    <p class="font-medium">Status</p>
+                    <p class="text-gray-600">{{ $lead->status ?? '-' }}</p>
+                </div>
+            </div>
+            <div class="flex justify-center sm:justify-end mt-6">
+                <a href="{{ route('leads.OpenUpdateFollowUp', $lead->id) }}"
+                   title="Update follow-up date and status"
+                   aria-label="Edit follow-up and status for {{ $lead->first_name }} {{ $lead->last_name }}"
+                   class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    Update follow-up & status
+                </a>
             </div>
         </div>
 
         <!-- Notes -->
-        <div class="mb-8">
-            <h2 class="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Notes</h2>
-            <div class="text-gray-700 bg-gray-50 p-4 rounded-md border">
-                @if ($lead->notes)
-                    <p class="whitespace-pre-line">{{ $lead->notes }}</p>
-                @else
-                    <p class="text-gray-500 italic">No notes available.</p>
-                @endif
-            </div>
-            <div class="flex justify-end mt-4">
-                <button 
-                    onclick="addNote($lead->id)"
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
-                    Add
-             </button>
-            </div>
-             
+        <h2 class="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Notes</h2>
+        <div class="text-gray-700 bg-gray-50 p-4 rounded-md border">
+            @if ($lead->notes)
+                <p class="whitespace-pre-line">{{ $lead->notes }}</p>
+            @else
+                <p class="text-gray-500 italic">No notes available.</p>
+            @endif
         </div>
+        
 
         <!-- Footer -->
         <div class="text-sm text-gray-500 mt-8 border-t pt-4 text-center">

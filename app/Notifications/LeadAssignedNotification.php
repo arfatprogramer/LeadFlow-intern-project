@@ -3,13 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Container\Attributes\Log;
+
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log as FacadesLog;
-
-use function Illuminate\Log\log;
+use Illuminate\Support\Facades\Log;
 
 class LeadAssignedNotification extends Notification implements ShouldQueue
 {
@@ -20,6 +18,7 @@ class LeadAssignedNotification extends Notification implements ShouldQueue
     public function __construct($lead)
     {
         $this->lead = $lead;
+        
     }
 
     // Use database notifications
@@ -31,7 +30,6 @@ class LeadAssignedNotification extends Notification implements ShouldQueue
     // Store in database
     public function toDatabase($notifiable)
     {
-        log('LeadAssignedNotification toDatabase called for user ID: ' . $notifiable->id);
         return [
             'title' => 'New Lead Assigned',
             'message' => "You have been assigned a new lead: {$this->lead->first_name} {$this->lead->last_name}",

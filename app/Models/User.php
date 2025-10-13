@@ -61,9 +61,14 @@ class User extends Authenticatable
         return $this->hasMany(Lead::class, 'assigned_to');
     }
    public function opportunities()
-{
-    return $this->hasMany(Opportunitie::class, 'user_id');
-}
+    {
+        return $this->hasMany(Opportunitie::class, 'user_id');
+    }
+
+    public function constacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 
     // Accessor: Returns only an array of role names
     protected function roleNames(): Attribute
