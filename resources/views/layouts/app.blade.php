@@ -85,7 +85,6 @@
                         <x-nav-link :href="route('leads.index')" :active="request()->routeIs('leads.index')">🧾 Leads</x-nav-link>
                         <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.index')">👥 contacts</x-nav-link>
                         <x-nav-link :href="route('opportunities.index')" :active="request()->routeIs('opportunities.index')">🎯 Opportunities</x-nav-link>
-                        <x-nav-link :href="url('reminder.index')" :active="request()->routeIs('reminders.index')">⏰ Reminders</x-nav-link>
                         <x-nav-link :href="route('profile.show',auth()->id())" :active="request()->routeIs('profile.show')">🧑‍🤝‍🧑 Profile</x-nav-link>
                     @if (in_array('admin', Auth::user()->role_names)) 
                             <x-nav-link class="whitespace-nowrap" :href="route('employes.index')" :active="request()->routeIs('employes.index')"> ⚙️ Uers Permissin</x-nav-link>

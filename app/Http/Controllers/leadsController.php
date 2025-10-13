@@ -17,11 +17,11 @@ class leadsController extends Controller
     public function index()
     {
         if (in_array('admin', Auth::user()->role_names)) {  
-            $leads = Lead::all(); // Fetch all leads assigned to user with ID 1
+            $leads = Lead::orderBy('updated_at','desc')->get(); // Fetch all leads assigned to user with ID 1
         }
         else{
            
-            $leads = Lead::where('assigned_to', Auth::id())->get(); // Fetch all leads assigned to user with ID 1
+            $leads = Lead::where('assigned_to', Auth::id())->orderBy('updated_at','desc')->get(); // Fetch all leads assigned to user with ID 1
         }
         return view('leads.index', compact('leads'));
     }

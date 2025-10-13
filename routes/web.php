@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('dashboard');
+    
+    return view('dashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -41,11 +42,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/employes/roles/{id}', [UserManagement::class, 'updateRoles'])->name('employes.updateRoles');
     
 });
-
-
-Route::get('/reminders', function () {
-    return 'reminders Page';
-})->middleware(['auth', 'verified'])->name('reminders.index');
 
 
 //Notifications

@@ -1,18 +1,14 @@
+@props(['data'])
 <x-app-layout>
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-blue-600">Lead Details</h1>
             <div class="space-x-2">
-                <a href="{{ route('leads.edit', $lead->id) }}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
-                    Edit
-                </a>
                 <a href="{{ route('leads.index') }}" 
                    class="bg-gray-200 max-sm:hidden hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
                     Back
                 </a>
-            </div>
         </div>
 
         <!-- Lead Form -->

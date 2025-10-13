@@ -46,7 +46,7 @@ class Lead extends Model
 
                   // Notify all admins
                 $admins = User::whereHas('roles', function ($q) {
-                    $q->where('role_name', 'Admin');
+                    $q->where('role_name', 'admin');
                 })->get();
                 $title = 'Lead Created';
                 $message = "A new lead: {$lead->first_name} {$lead->last_name} has been created and assigned to {$user->name}";
