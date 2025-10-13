@@ -44,9 +44,9 @@
                                     </div>
                                 </td>
 
-                                <!-- Title -->
+                                <!-- name -->
                                 <td class="p-3">
-                                    <a href="{{ route('contacts.show', $user->id) }}" 
+                                    <a href="{{ route('employes.show', $user->id) }}" 
                                        class="text-indigo-600 font-medium hover:underline">
                                         {{ ucwords($user->name) }} 
                                     </a>

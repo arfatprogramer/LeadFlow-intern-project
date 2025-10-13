@@ -15,6 +15,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -35,6 +36,10 @@ Route::middleware(['auth'])->group(function () {
 
     //User Managemant
     Route::get('/employes',[UserManagement::class,'index'])->name('employes.index');
+    Route::get('/employes/show/{id}',[UserManagement::class,'show'])->name('employes.show');
+    Route::get('/employes/roles/{id}', [UserManagement::class, 'editRoles'])->name('employes.roles');
+    Route::post('/employes/roles/{id}', [UserManagement::class, 'updateRoles'])->name('employes.updateRoles');
+    
 });
 
 
