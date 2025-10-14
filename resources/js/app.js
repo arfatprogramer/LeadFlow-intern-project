@@ -150,19 +150,34 @@ $(document).ready(function() {
 
 
 
-function showAlert(message, bg = 'bg-green-600') {
-    // Create a div for the alert
+function showAlert(message, type = 'success') {
+    let bgClass, borderClass, textClass;
+
+    if(type === 'success') {
+        bgClass = 'bg-green-100';
+        borderClass = 'border-green-400';
+        textClass = 'text-green-700';
+    } else if(type === 'error') {
+        bgClass = 'bg-red-100';
+        borderClass = 'border-red-400';
+        textClass = 'text-red-700';
+    } else {
+        // default to info
+        bgClass = 'bg-blue-100';
+        borderClass = 'border-blue-400';
+        textClass = 'text-blue-700';
+    }
+
     const alert = $('<div>')
-        .addClass(`fixed bottom-5 right-5 text-white px-4 py-2 rounded shadow-lg ${bg}`)
+        .addClass(`fixed bottom-5 right-5 px-4 py-3 rounded border shadow-lg ${bgClass} ${borderClass} ${textClass}`)
         .text(message);
 
-    // Add it to the body
     $('body').append(alert);
 
-    // Remove it after 3 seconds
     setTimeout(() => {
         alert.fadeOut(400, () => alert.remove());
     }, 3000);
 }
+
    
        

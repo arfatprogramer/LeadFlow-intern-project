@@ -105,30 +105,42 @@
       </div>
 
       <!-- Bulk Update Modal -->
-<div id="bulkUpdateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-4">Bulk Update Leads</h3>
+        <div id="bulkUpdateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+                <h3 class="text-lg font-semibold mb-4">Bulk Update Leads</h3>
 
-        <div class="mb-4">
-            <label for="bulkStatus" class="block text-sm font-medium mb-1">Status</label>
-            <select id="bulkStatus" class="w-full border border-gray-300 rounded px-2 py-1">
-                <option value="">Select Status</option>
-                <option value="New">New</option>
-                <option value="Contacted">Contacted</option>
-                <option value="Qualified">Qualified</option>
-                <option value="Converted">Converted</option>
-                <option value="Lost">Lost</option>
-            </select>
+                <div class="mb-4">
+                    <label for="bulkStatus" class="block text-sm font-medium mb-1">Status</label>
+                    <select id="bulkStatus" class="w-full border border-gray-300 rounded px-2 py-1">
+                        <option value="">Select Status</option>
+                        <option value="New">New</option>
+                        <option value="Contacted">Contacted</option>
+                        <option value="Qualified">Qualified</option>
+                        <option value="Converted">Converted</option>
+                        <option value="Lost">Lost</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button id="cancelBulkUpdate" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+                    <button id="confirmBulkUpdate" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Update</button>
+                </div>
+            </div>
         </div>
 
-        <div class="flex justify-end gap-2">
-            <button id="cancelBulkUpdate" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
-            <button id="confirmBulkUpdate" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Update</button>
-        </div>
-    </div>
-</div>
+        {{-- show Notification form Session --}}
+      @if(session('success'))
+            <div class="absolute bottom-3 right-10 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
 
-      
+        @if(session('error'))
+            <div class="absolute bottom-3 right-10 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
+
     </body>
 
 </html>
