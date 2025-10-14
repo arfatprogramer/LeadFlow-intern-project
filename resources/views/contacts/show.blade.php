@@ -7,11 +7,22 @@
                 <h1 class="text-2xl font-bold text-indigo-600">Contact Details</h1>
                 <p class="text-sm text-gray-500">View and manage contact information</p>
             </div>
-            <div class="space-x-2">
+            <div class="flex gap-3 items-center justify-center ">
+
+                <a href="{{ route('contacts.log',$contact->id) }}" 
+                   class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition">
+                    Log
+                </a>
+
                 <a href="{{ route('contacts.edit', $contact->id) }}" 
                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md shadow text-sm font-medium transition">
                     Edit
                 </a>
+                <form action="{{ route('contacts.destroy', $contact->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow text-sm font-medium transition-colors">Delete</button>
+                </form>
                 <a href="{{ route('contacts.index') }}" 
                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition">
                     Back

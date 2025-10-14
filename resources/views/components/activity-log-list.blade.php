@@ -1,5 +1,8 @@
 @props(['logs','logName'])
 
+@php
+     $logs = $logs->sortByDesc('created_at')
+@endphp
 <div class="bg-white shadow rounded-lg p-4 mt-4">
     <h3 class="text-lg font-semibold text-gray-700 mb-3">Activity Logs - {{ $logName }} </h3>
 

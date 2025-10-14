@@ -101,11 +101,14 @@ class OpportunitiesController extends Controller
     // for display contats Specife Logs
      public function log($id)
     {
-        $opportunity=lead::with(['activityLogs'])->OrderBy('created_at','desc')->findOrFail($id);
-        
+        $opportunity=Opportunitie::with(['activityLogs','lead.activityLogs'])->OrderBy('created_at','desc')->findOrFail($id);
+        // return $opportunity;
         $logs=collect();
         if ($opportunity->activityLogs) {
            $logs=$logs->merge($opportunity->activityLogs);
+        }
+         if ($opportunity->lead && $opportunity->lead->activityLogs) {
+           $logs=$logs->merge($opportunity->lead->activityLogs);
         }
         $logName=$opportunity->title;
         return view('show-logs',compact('logs','logName'));

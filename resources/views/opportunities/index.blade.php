@@ -4,6 +4,7 @@
             
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
+                
                 <div>
                     <h2 class="text-2xl font-semibold text-gray-800">Opportunities</h2>
                     <p class="text-sm text-gray-500">Track and manage your sales opportunities efficiently.</p>

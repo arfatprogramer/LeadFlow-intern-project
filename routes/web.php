@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\contactControler;
+use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\leadsController;
 use App\Http\Controllers\OpportunitiesController;
 use App\Http\Controllers\ProfileController;
@@ -11,31 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    $totalLeads = Lead::count();
-
-    $leadsByStatus = Lead::select('status', DB::raw('count(*) as total'))
-                        ->groupBy('status')
-                        ->pluck('total', 'status');
-
-    $recentLeads = Lead::latest()->take(5)->get();
-
-    // Upcoming follow-ups (after today)
-    $upcomingFollowUps = Lead::whereDate('follow_up_date', '>', now())->count();
-
-    // Pending follow-ups (today or past)
-    $pendingFollowUps = Lead::whereDate('follow_up_date', '<=', now())
-                            ->whereNull('converted_at') // assuming converted leads shouldn't count
-                            ->count();
-
-    return view('dashboard.index', compact(
-        'totalLeads', 
-        'leadsByStatus', 
-        'recentLeads', 
-        'upcomingFollowUps',
-        'pendingFollowUps'
-    ));
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -46,6 +22,9 @@ Route::middleware('auth')->group(function () {
 
 //created by me
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/',[DashBoardController::class,'index'])->name('dashboard');
+
     Route::resource('leads', LeadsController::class);
     Route::get('leads/logs/{id}', [LeadsController::class,'log'])->name('leads.log');
     Route::post('leads/bulk-delete', [LeadsController::class,'bulkDestroy'])->name('leads.bulk-delete');
@@ -67,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employes/roles/{id}', [UserManagement::class, 'editRoles'])->name('employes.roles');
     Route::post('/employes/roles/{id}', [UserManagement::class, 'updateRoles'])->name('employes.updateRoles');
     
+});
+
+Route::get('/test',function(){
+    return view('dashboard');
 });
 
 

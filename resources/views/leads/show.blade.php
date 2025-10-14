@@ -2,11 +2,22 @@
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-blue-600">Lead Details</h1>
-            <div class="space-x-2">
+            <div class="flex justify-center items-center gap-3">
+
+                 <a href="{{ route('leads.log',$lead->id) }}" 
+                   class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition">
+                    Log
+                </a>
+
                 <a href="{{ route('leads.edit', $lead->id) }}" 
                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
                     Edit
                 </a>
+                <form action="{{ route('leads.destroy', $lead->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow text-sm font-medium transition-colors">Delete</button>
+                </form>
                 <a href="{{ route('leads.index') }}" 
                    class="bg-gray-200 max-sm:hidden  hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
                     Back

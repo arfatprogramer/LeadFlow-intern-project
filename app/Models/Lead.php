@@ -83,7 +83,7 @@ class Lead extends Model
                     'user_id' => $lead->assigned_to,
                     'lead_id'    => $lead->id,
                     'details'    => "Converted from Lead ID: ".$lead->id,
-                    'title'     => 'Opportunity for '.$lead->first_name.' '.$lead->last_name,
+                    'title'     => $lead->first_name.' '.$lead->last_name,
                 ]);
                   // Notify 
                 $data=[
