@@ -9,6 +9,7 @@
                    class="bg-gray-200 max-sm:hidden hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow text-sm font-medium transition-colors">
                     Back
                 </a>
+            </div>
         </div>
 
         <!-- Lead Form -->
@@ -24,6 +25,10 @@
                     <div>
                         <x-input-label :value="'Lead Name'" />
                         <p class="text-gray-600">{{ $lead->first_name ?? '-' }}</p>
+                    </div>
+
+                    <div>
+                        
                     </div>
 
                     <!-- Lead Status -->
@@ -58,17 +63,7 @@
                         <x-errors :name="'follow_up_date'"/>
                     </div>
 
-                    <!-- Reminder Time -->
-                    <div>
-                        <x-input-label>Reminder Time</x-input-label>
-                        <input 
-                            type="time" 
-                            name="reminder_time" 
-                            value="{{ old('reminder_time', $lead->reminder_time ?? date('H:i')) }}" 
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        >
-                        <x-errors :name="'reminder_time'"/>
-                    </div>
+                   
                 </div>
             </div>
 

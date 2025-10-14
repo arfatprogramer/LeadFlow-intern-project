@@ -43,13 +43,23 @@
 
                         <div class="max-h-64 overflow-y-auto">
                             @forelse($notifications as $note)
-                                <a href="{{ route('markasread',  ['id' => $note->id, 'lead_id' => $note->data['lead_id']]) }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-50">
-                                     {{ $note->data['message'] ?? 'Notification' }}
-                                     <span class="text-xs text-gray-400 block mt-0.5">
-                                          {{ $note->created_at->diffForHumans() }}
-                                     </span>
-                                </a>
+                                @if ($note->data['deleted']??false)
+                                     <a href="{{ route('markasread',  ['id' => $note->id, 'lead_id' => $note->data['id']]) }}"
+                                        class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 border-b border-gray-50">
+                                        {{ $note->data['message'] ?? 'Notification' }}
+                                        <span class="text-xs text-gray-400 block mt-0.5">
+                                            {{ $note->created_at->diffForHumans() }}
+                                        </span>
+                                    </a>
+                                @else
+                                    <a href="{{ route('markasread',  ['id' => $note->id, 'lead_id' => $note->data['id']]) }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-50">
+                                        {{ $note->data['message'] ?? 'Notification' }}
+                                        <span class="text-xs text-gray-400 block mt-0.5">
+                                            {{ $note->created_at->diffForHumans() }}
+                                        </span>
+                                    </a>
+                                 @endif
                             @empty
                                 <p class="px-4 py-3 text-gray-500 text-sm text-center">No new notifications</p>
                             @endforelse

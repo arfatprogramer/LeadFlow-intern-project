@@ -7,22 +7,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class tesst extends Notification
+class sendDeleteNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-
+    public $id;
     public $title;
     public $message;
-    public $lead_id;
-    public function __construct($title, $message, $lead_id)
+    public function __construct($id, $title, $message)
     {
-        $this->title = $title;
-        $this->message = $message;
-        $this->lead_id = $lead_id;
+        $this->id=$id;
+        $this->title=$title;
+        $this->message=$message;
     }
 
     /**
@@ -32,19 +31,19 @@ class tesst extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database','mail'];
+        return ['database'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
-    }
+    // public function toMail(object $notifiable): MailMessage
+    // {
+    //     return (new MailMessage)
+    //         ->line('The introduction to the notification.')
+    //         ->action('Notification Action', url('/'))
+    //         ->line('Thank you for using our application!');
+    // }
 
     /**
      * Get the array representation of the notification.
@@ -54,9 +53,10 @@ class tesst extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-           'title' => $this->title,
-            'message' => $this->message,
-            'lead_id' => $this->lead_id,
+            "id"=>0,
+            "title"=>$this->title,
+            "message"=>$this->message,
+            "deleted"=>true,
         ];
     }
 }

@@ -9,8 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 use App\Models\Opportunitie ;
-use App\Models\Contact; 
-
+use App\Models\Contact;
+use App\Notifications\sendDeleteNotification;
+use App\Services\ActivityLogService;
+use App\Services\LeadNotificationService;
+use Illuminate\Support\Facades\Auth;
 
 class Lead extends Model
 {
@@ -33,25 +36,28 @@ class Lead extends Model
         return $this->hasOne(Contact::class);
     }
 
+     //this  for Manage Logs
+    public function activityLogs()
+    {
+        return $this->morphMany(ActivityLog::class,'loggable')->latest();
+    }
+
     // Automatically send notification when created or updated
     protected static function booted()
     {
         // When lead is created
         static::created(function ($lead) {
-            $user = User::find($lead->assigned_to);
-            $title = 'New Lead Assigned';
-            $message = "You have been assigned a new lead: {$lead->first_name} {$lead->last_name}";
-            if ($user) {
-                $user->notify(new SendNotifications($title,$message,$lead->id));
-
-                  // Notify all admins
-                $admins = User::whereHas('roles', function ($q) {
-                    $q->where('role_name', 'admin');
-                })->get();
-                $title = 'Lead Created';
-                $message = "A new lead: {$lead->first_name} {$lead->last_name} has been created and assigned to {$user->name}";
-                Notification::send($admins, new SendNotifications($title,$message,$lead->id));
-            }
+            // send Notification 
+            $data=[
+                'user_title'=>"New Lead Created",
+                'user_message'=>"You have been assigned a new lead: {$lead->first_name} {$lead->last_name}",
+                'admin_title'=>"",
+                "admin_message"=>"A new lead: {$lead->first_name} {$lead->last_name} has been created and assigned to <username>",
+            ];
+             LeadNotificationService::notifyLeadAssignment($lead,$data);
+            //Log data into database 
+            $msg="new Lead $lead->first_name $lead->last_name  hase been created ";
+            ActivityLogService::log($lead,'Created',$msg);
 
         });
 
@@ -79,24 +85,74 @@ class Lead extends Model
                     'details'    => "Converted from Lead ID: ".$lead->id,
                     'title'     => 'Opportunity for '.$lead->first_name.' '.$lead->last_name,
                 ]);
-                  // Notify assigned user
-                 $user = User::find($lead->assigned_to);
-                if ($user) {
-                    $title = 'Lead Qualified';
-                    $message = "Lead {$lead->first_name} {$lead->last_name} has been qualified. Contact and Opportunity created and assigned to you.";
-                    $lead_id = $lead->id;
-                    $user->notify(new SendNotifications($title,$message,$lead_id));
-                }
-
-                // Notify all admins
-                $admins = User::whereHas('roles', function ($q) {
-                    $q->where('role_name', 'admin');
-                })->get();
-                $title = 'Lead Qualified';
-                $message = "Lead {$lead->first_name} {$lead->last_name} has been qualified. Contact and Opportunity created.";
-                $lead_id = $lead->id;
-                Notification::send($admins, new SendNotifications($title, $message, $lead_id));
+                  // Notify 
+                $data=[
+                    'user_title'=>"Lead Qualified",
+                    'user_message'=>"Lead {$lead->first_name} {$lead->last_name} has been qualified. Contact and Opportunity created and assigned to you.",
+                    'admin_title'=>"Lead Qualified",
+                    "admin_message"=>"Lead {$lead->first_name} {$lead->last_name} has been qualified. Contact and Opportunity created.",
+                ];
+                LeadNotificationService::notifyLeadAssignment($lead,$data);
+                //Log data into database 
+                $msg="The Lead $lead->first_name $lead->last_name  hase been qualified ";
+                ActivityLogService::log($lead,'Status_changed',$msg);
             }
+
+            if ($lead->isDirty('status') && $lead->status === 'Lost') {
+
+                //Log data into database 
+                $msg="The Lead $lead->first_name $lead->last_name  hase been lost ";
+                ActivityLogService::log($lead,'Status_changed',$msg);
+
+                  // Notify assigned user
+                 $data=[
+                    'user_title'=>"Lead Lost",
+                    'user_message'=>"Lead {$lead->first_name} {$lead->last_name} has been Lost.",
+                    'admin_title'=>"Lead Lost",
+                    "admin_message"=>"Lead {$lead->first_name} {$lead->last_name} has been Lost.",
+                ];
+                LeadNotificationService::notifyLeadAssignment($lead,$data);
+            }
+
+              if ($lead->isDirty('status') && $lead->status === 'Contacted') {
+    
+                 $data=[
+                    'user_title'=>"Lead Contacted",
+                    'user_message'=>"Lead {$lead->first_name} {$lead->last_name} has been Contacted.",
+                    'admin_title'=>"Lead Contacted",
+                    "admin_message"=>"Lead {$lead->first_name} {$lead->last_name} has been Contacted.",
+                ];
+                LeadNotificationService::notifyLeadAssignment($lead,$data);
+                //Log data into database 
+                ActivityLogService::log($lead,'Status_changed',$data['admin_message']);
+            }
+
+              if ($lead->isDirty('status') && $lead->status === 'Converted') {
+               
+                  // Notify assigned user 
+                 $data=[
+                    'user_title'=>"Lead Converted",
+                    'user_message'=>"Lead {$lead->first_name} {$lead->last_name} has been Converted.",
+                    'admin_title'=>"Lead Converted",
+                    "admin_message"=>"Lead {$lead->first_name} {$lead->last_name} has been Converted.",
+                ];
+                LeadNotificationService::notifyLeadAssignment($lead,$data);
+                //Log data into database 
+                ActivityLogService::log($lead,'Status_changed',$data['admin_message']);
+            }
+        });
+
+        static::deleted(function($lead){
+              // Notify assigned user
+                 $data=[
+                    'user_title'=>"Lead Deleted",
+                    'user_message'=>"Lead {$lead->first_name} {$lead->last_name} has been Deleted.",
+                    'admin_title'=>"Lead Deleted",
+                    "admin_message"=>"Lead {$lead->first_name} {$lead->last_name} has been Deleted.",
+                ];
+                LeadNotificationService::notifyLeadAssignment($lead,$data);
+                //Log data into database 
+                ActivityLogService::log($lead,'Status_changed',$data['admin_message']);
         });
     }
 }

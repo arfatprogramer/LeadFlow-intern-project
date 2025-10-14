@@ -35,11 +35,11 @@
                     <tbody class="text-gray-700 divide-y">
                         @foreach($opportunities as $opportunity)
                             <tr class="hover:bg-gray-50 group transition">
-                                <td class="p-3 relative">
+                                <td class="p-3 gap-2 flex items-center justify-start">
                                     <input type="checkbox" name="opportunity_id[]" value="{{ $opportunity->id }}" class=" opportunity-checkbox w-4 h-4 text-indigo-600">
-                                    
-                                    <!-- Actions (edit/delete) -->
-                                    <div class="flex gap-1 items-center absolute top-2 left-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <!-- Actions (log/edit/delete) -->
+                                    <div class="flex gap-1 items-center  opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <x-log-icon :href="route('opportunities.log', $opportunity->id)" />
                                         <x-editIcon :href="route('opportunities.edit', $opportunity->id)" />
                                         <x-softDeleteIcon :action="route('opportunities.destroy', $opportunity->id)" />
                                     </div>

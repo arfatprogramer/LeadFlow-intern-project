@@ -59,7 +59,7 @@ class SendNotifications extends Notification
         return [
             'title' => $this->title,
             'message' => $this->message,
-            'lead_id' => $this->lead_id,
+            'id' => $this->lead_id,
         ];
     }
 }

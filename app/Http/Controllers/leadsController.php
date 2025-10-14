@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Lead;
 use App\Models\User;
 use App\Notifications\LeadQualifiedNotification;
@@ -56,7 +57,6 @@ class leadsController extends Controller
                 'assigned_to' => $request->assigned_to,
                 'created_by' => Auth::id(),
                 'follow_up_date' => $request->follow_up_date,
-                'reminder_time' => $request->reminder_time,
             ]);
 
         return redirect()->route('leads.index')->with('success', 'Lead created successfully!');
@@ -98,7 +98,6 @@ class leadsController extends Controller
             'notes' => $request->notes,
             'assigned_to' => $request->assigned_to,
             'follow_up_date' => $request->follow_up_date,
-            'reminder_time' => $request->reminder_time,
         ]) ;
 
         return redirect()->route('leads.index')->with('success', 'Lead updated successfully!');
@@ -131,19 +130,36 @@ class leadsController extends Controller
     {
         $request->validate([
             'follow_up_date' => 'required|date',
-            'reminder_time' => 'nullable|',
             'status' => 'required|string',
             'notes' => 'required|string',
         ]);
 
         $lead = Lead::findOrFail($id);
         $lead->follow_up_date = $request->follow_up_date;
-        $lead->reminder_time = $request->reminder_time;
         $lead->status = $request->status;
         $lead->notes = $request->notes;
         $lead->save();
 
         return redirect()->route('leads.show',$id)->with('success', 'Follow-up details updated successfully.');
+    }
+
+    public function log($id)
+    {
+        $lead=lead::with(['activityLogs','contacts.activityLogs','opportunities.activityLogs'])->OrderBy('created_at','desc')->findOrFail($id);
+        $logs=collect();
+        if ($lead->activityLogs) {
+           $logs=$logs->merge($lead->activityLogs);
+        }
+
+        if ($lead->contats && $lead->contats->activityLogs ) {
+             $logs=$logs->merge($lead->contats->activityLogs);
+        }
+
+         if ($lead->opportunities && $lead->opportunities->activityLogs ) {
+             $logs=$logs->merge($lead->opportunities->activityLogs);
+        }
+        $logName=$lead->first_name." ".$lead->last_name;
+        return view('show-logs',compact('logs','logName'));
     }
 
 }

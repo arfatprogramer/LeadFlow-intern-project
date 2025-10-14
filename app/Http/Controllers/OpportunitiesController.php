@@ -14,7 +14,7 @@ class OpportunitiesController extends Controller
      */
     public function index()
     {
-         $opportunities = Opportunitie::with(['lead', 'user'])->latest()->paginate(10);
+         $opportunities = Opportunitie::with(['lead', 'user'])->orderBy('updated_at','desc')->paginate(10);
         return view('opportunities.index', compact('opportunities'));
     }
 
@@ -96,5 +96,18 @@ class OpportunitiesController extends Controller
         $Opportunitie->delete();
         return back()->with('success', 'Opportunity deleted.');
     
+    }
+    
+    // for display contats Specife Logs
+     public function log($id)
+    {
+        $opportunity=lead::with(['activityLogs'])->OrderBy('created_at','desc')->findOrFail($id);
+        
+        $logs=collect();
+        if ($opportunity->activityLogs) {
+           $logs=$logs->merge($opportunity->activityLogs);
+        }
+        $logName=$opportunity->title;
+        return view('show-logs',compact('logs','logName'));
     }
 }

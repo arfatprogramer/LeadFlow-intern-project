@@ -18,12 +18,12 @@ class contactControler extends Controller
         
         if (array_intersect($roles, ['admin', 'manager']))
         {
-            $contacts = Contact::with(['user'])->get();
+            $contacts = Contact::with(['user'])->orderBy('updated_at','desc')->get();
            
         }
         else
         {
-            $contacts = Contact::where('assigned_to', Auth::id())->get();
+            $contacts = Contact::where('assigned_to', Auth::id())->orderBy('updated_at','desc')->get();
         }
         
         return view('contacts.index',compact('contacts'));
@@ -79,5 +79,18 @@ class contactControler extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    //this function for display Logs
+     public function log($id)
+    {
+        $contact=Contact::with(['activityLogs'])->OrderBy('created_at','desc')->findOrFail($id);
+        $logs=collect();
+
+        if ($contact->activityLogs) {
+           $logs=$logs->merge($contact->activityLogs);
+        }
+        $logName=$contact->first_name." ".$contact->last_name;
+        return view('show-logs',compact('logs','logName'));
     }
 }

@@ -5,8 +5,8 @@
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-2xl font-semibold text-gray-800">Opportunities</h2>
-                    <p class="text-sm text-gray-500">Track and manage your sales opportunities efficiently.</p>
+                    <h2 class="text-2xl font-semibold text-gray-800">Contats</h2>
+                    <p class="text-sm text-gray-500">Track and manage Contacts efficiently.</p>
                 </div>
 
                 <a href="{{ route('contacts.create') }}">
@@ -36,18 +36,19 @@
                     <tbody class="text-gray-700 divide-y">
                         @foreach($contacts as $contact)
                             <tr class="hover:bg-gray-50 group transition">
-                                <td class="p-3 relative">
+                                <td class="p-3 gap-2 flex items-center justify-start">
                                     <input type="checkbox" name="contact_id[]" value="{{ $contact->id }}" class=" contact-checkbox w-4 h-4 text-indigo-600">
                                     
                                     <!-- Actions (edit/delete) -->
-                                    <div class="flex gap-1 items-center absolute top-2 left-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div class="flex  items-center  top-2 left-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <x-log-icon :href="route('contacts.log', $contact->id)" />
                                         <x-editIcon :href="route('contacts.edit', $contact->id)" />
                                         <x-softDeleteIcon :action="route('contacts.destroy', $contact->id)" />
                                     </div>
                                 </td>
 
                                 <!-- Title -->
-                                <td class="p-3">
+                                <td class="p-3 whitespace-nowrap">
                                     <a href="{{ route('contacts.show', $contact->id) }}" 
                                        class="text-indigo-600 font-medium hover:underline">
                                         {{ ucwords($contact->first_name) }} {{ ucwords($contact->last_name) }}
@@ -57,16 +58,16 @@
                             
 
                                 <!-- Amount -->
-                                <td class="p-3 font-medium text-gray-800">
+                                <td class="p-3 font-medium text-gray-800 whitespace-nowrap">
                                     {{($contact->phone) }}
                                 </td>
 
-                                <td>
+                                <td class="whitespace-nowrap">
                                     {{ $contact->email }}
                                 </td>
 
                                 <!-- Stage -->
-                                <td class="p-3">
+                                <td class="p-3 whitespace-nowrap">
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full
                                         {{ $contact->status == 'Interested' ? 'bg-blue-100 text-blue-700' : '' }}
                                         {{ $contact->status == 'Qualified' ? 'bg-yellow-100 text-yellow-700' : '' }}
@@ -77,7 +78,7 @@
                                 </td>
 
                                  <!-- Linked Lead -->
-                                <td class="p-3">
+                                <td class="p-3 whitespace-nowrap">
                                     @if($contact->lead)
                                         <a href="{{ route('leads.show', $contact->lead->id) }}" 
                                            class="text-gray-700 hover:text-indigo-600">
@@ -89,7 +90,7 @@
                                 </td>
 
                                  <!-- Assigned User -->
-                                <td class="p-3">
+                                <td class="p-3 whitespace-nowrap">
                                     @php
                                         
                                     @endphp
@@ -98,7 +99,7 @@
 
 
                                 <!-- Expected Close -->
-                                <td class="p-3 text-gray-500">
+                                <td class="p-3 text-gray-500 whitespace-nowrap">
                                     {{ \Carbon\Carbon::parse($contact->updated_at)->format('d M, Y') }}
                                 </td>
                             </tr>

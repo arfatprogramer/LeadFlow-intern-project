@@ -11,6 +11,10 @@
 
 
             <div class="overflow-x-auto">
+                <div class="flex gap-3 mb-4 mx-5 "  id="bulkButtons">
+                    <button id="bulkDeleteBtn" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-md text-sm"> Delete </button>
+                    <button id="bulkUpdateBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded-md text-sm">Update</button>
+                </div>
                 <table id="leadsTable" class="dataTable min-w-full border border-gray-200 rounded-lg">
                     <thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                         <tr>
@@ -26,11 +30,12 @@
                     <tbody class="text-gray-700">
                         @foreach($leads as $lead)
                             <tr class="border-b hover:bg-gray-50 group transition">
-                                <td class="p-3 pr-10 relative ">
+                                <td class="p-3 gap-2 flex items-center justify-start ">
                                     <input type="checkbox" name="lead_id[]" value="{{ $lead->id }}" class="lead-checkbox w-4 h-4">
-                                    <div class="flex items-center justify-center absolute top-2 left-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <x-editIcon :href="route('leads.edit', $lead->id)">edit</x-editIcon>
-                                        <x-softDeleteIcon :action="route('leads.destroy', $lead->id)">delete</x-softDeleteIcon>
+                                    <div class="flex items-center justify-center  opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <x-log-icon :href="route('leads.log', $lead->id)" />
+                                        <x-editIcon :href="route('leads.edit', $lead->id)" />
+                                        <x-softDeleteIcon :action="route('leads.destroy', $lead->id)" />
                                     </div>
                                 </td>
                                 
