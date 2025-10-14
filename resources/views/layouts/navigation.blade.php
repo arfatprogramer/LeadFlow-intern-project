@@ -83,7 +83,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center gap-2 focus:outline-none">
-                            <img src="https://i.pravatar.cc/40" alt="User Avatar" class="w-8 h-8 rounded-full">
+                            <span class=" flex items-center justify-center text-white font-bold bg-purple-800 h-10 w-10 rounded-full border-2 border-white " >{{ Auth::user()->name[0]}}</span>
                             <span class="text-white text-sm font-medium">{{ Auth::user()->name }}</span>
                             <svg class="fill-current text-white h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20">

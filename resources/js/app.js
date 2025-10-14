@@ -28,6 +28,47 @@ $(document).ready(function() {
                     if (confirm('Delete selected leads?')) sendRequest('delete', ids,"leads/bulk-delete","POST");
                 });
 
+                // Open bulk update modal
+                $('#bulkUpdateBtn').on('click', function() {
+                    const selected = $('.lead-checkbox:checked');
+                    if (!selected.length) return showAlert('Please select at least one lead.', 'bg-yellow-500');
+                    $('#bulkUpdateModal').removeClass('hidden');
+                });
+
+                // Close modal
+                $('#cancelBulkUpdate').on('click', function() {
+                    $('#bulkUpdateModal').addClass('hidden');
+                });
+
+                $('#confirmBulkUpdate').on('click', function() {
+                    const status = $('#bulkStatus').val();
+                    if (!status) return showAlert('Please select a status.', 'bg-yellow-500');
+
+                    const ids = $('.lead-checkbox:checked').map(function() {
+                        return $(this).val();
+                    }).get();
+
+                    // Pass status as extra data
+                    $.ajax({
+                        url: "/leads/bulk-update",
+                        method: "POST",
+                        data: {
+                            ids: ids,
+                            status: status,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(res) {
+                            showAlert(res.message, 'bg-green-600');
+                            setTimeout(() => location.reload(), 500);
+                        },
+                        error: function(res) {
+                            showAlert(res.responseJSON?.message || 'Something went wrong!', 'bg-red-600');
+                        }
+                    });
+                });
+
+
+
 
 
                 let opportunitiesTable = $('#opportunitiesTable').DataTable({
@@ -70,24 +111,39 @@ $(document).ready(function() {
                     }).get();
                 }
 
-                function sendRequest(action, ids,url,method) {
-                    $.ajax({
-                        url: "http://localhost:8000/"+url,
-                        method: method,
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            action: action,
-                            ids: ids
-                        },
-                        success: function (res) {
-                            showAlert(res.message, 'bg-green-600');
-                            ids.forEach(id => $('tr[data-id="' + id + '"]').remove());
-                        },
-                        error: function () {
-                            showAlert('Something went wrong!', 'bg-red-600');
-                        }
-                    });
-                }
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+              function sendRequest(action, ids, url, method) {
+                const baseUrl = $('meta[name="base-url"]').attr('content'); // if using meta tag for base URL
+
+                $.ajax({
+                    url: `${baseUrl}/${url}`,
+                    method: method,
+                    data: {
+                        action: action,
+                        ids: ids
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (res) {
+                        showAlert(res.message, 'bg-green-600');
+                        // Reload the page after successful action
+                        setTimeout(() => {
+                            location.reload();
+                        }, 300); // optional small delay to show alert
+                    },
+                    error: function () {
+                        showAlert('Something went wrong!', 'bg-red-600');
+                    }
+                });
+            }
+
+
 
 
             });

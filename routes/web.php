@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('leads', LeadsController::class);
     Route::get('leads/logs/{id}', [LeadsController::class,'log'])->name('leads.log');
     Route::post('leads/bulk-delete', [LeadsController::class,'bulkDestroy'])->name('leads.bulk-delete');
+    Route::post('leads/bulk-update', [LeadsController::class, 'bulkUpdate'])->name('leads.bulk-update');
     Route::get('leads/follo-up/{id}', [LeadsController::class,'OpenUpdateFollowUp'])->name('leads.OpenUpdateFollowUp');
     Route::post('leads/follo-up/{id}', [LeadsController::class,'updateFollowUp'])->name('leads.updateFollowUp');
 

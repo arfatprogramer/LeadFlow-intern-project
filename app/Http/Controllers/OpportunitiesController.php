@@ -6,17 +6,34 @@ use App\Models\Lead;
 use App\Models\Opportunitie;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OpportunitiesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-         $opportunities = Opportunitie::with(['lead', 'user'])->orderBy('updated_at','desc')->paginate(10);
-        return view('opportunities.index', compact('opportunities'));
-    }
+        public function index()
+        {
+            $user = Auth::user();
+            $isAdmin = in_array('admin', $user->role_names);
+
+            if ($isAdmin) {
+                // Admin → See all opportunities
+                $opportunities = Opportunitie::with(['lead', 'user'])
+                    ->orderBy('updated_at', 'desc')
+                    ->paginate(10);
+            } else {
+                // Non-admin → See only assigned opportunities
+                $opportunities = Opportunitie::with(['lead', 'user'])
+                    ->where('user_id', $user->id)
+                    ->orderBy('updated_at', 'desc')
+                    ->paginate(10);
+            }
+
+            return view('opportunities.index', compact('opportunities'));
+        }
+
 
     /**
      * Show the form for creating a new resource.
