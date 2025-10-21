@@ -103,7 +103,7 @@
                     name="assigned_to" 
                     class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
-                   @if (in_array('admin', Auth::user()->role_names) || in_array('manager', Auth::user()->role_names)))
+                    @can('is-manager')
                         <option value="">Select User</option>
                         @foreach (App\Models\User::all() as $user)
                             <option value="{{ $user->id }}" {{ old('assigned_to', $lead->assigned_to) == $user->id ? 'selected' : '' }}>
@@ -112,7 +112,7 @@
                         @endforeach
                     @else
                         <option value="{{ auth()->user()->id }}" selected>{{ auth()->user()->name }}</option>    
-                    @endif
+                    @endcan
                 </select>
             </div>
         </div>
@@ -125,16 +125,6 @@
                     type="date" 
                     name="follow_up_date" 
                     value="{{ old('follow_up_date', $lead->follow_up_date ?? date('Y-m-d')) }}" 
-                    class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                >
-            </div>
-
-            <div>
-                <x-input-label>Reminder Time</x-input-label>
-                <input 
-                    type="time" 
-                    name="reminder_time" 
-                    value="{{ old('reminder_time', $lead->reminder_time ?? date('H:i')) }}" 
                     class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
             </div>

@@ -108,11 +108,12 @@
                 <div>
                     <x-input-label for="assigned_to">Assigned To</x-input-label>
                     <select 
+                        required
                         name="assigned_to" 
                         id="assigned_to"
                         class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     >
-                        @if (in_array('admin', Auth::user()->role_names) || in_array('manager', Auth::user()->role_names))
+                        @can('is-manager')
                             <option value="">Select User</option>
                             @foreach (App\Models\User::all() as $user)
                                 <option value="{{ $user->id }}" {{ old('assigned_to') == $user->id ? 'selected' : '' }}>
@@ -121,7 +122,7 @@
                             @endforeach
                         @else
                             <option value="{{ auth()->user()->id }}" selected>{{ auth()->user()->name }}</option>    
-                        @endif
+                        @endcan
                     </select>
                     <x-errors :name="'assigned_to'"/>
                 </div>
@@ -130,7 +131,6 @@
             <!-- Follow-up -->
             @php
                 $today = date('Y-m-d');
-                $time = date('H:i');
             @endphp
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -142,18 +142,6 @@
                         id="follow_up_date" 
                         name="follow_up_date" 
                         value="{{ old('follow_up_date', $today) }}"
-                        class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    >
-                </div>
-
-                <!-- Reminder Time -->
-                <div>
-                    <x-input-label for="reminder_time">Reminder Time</x-input-label>
-                    <input 
-                        type="time" 
-                        id="reminder_time" 
-                        name="reminder_time" 
-                        value="{{ old('reminder_time', $time) }}"
                         class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     >
                 </div>

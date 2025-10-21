@@ -7,6 +7,7 @@ use App\Models\Opportunitie;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class OpportunitiesController extends Controller
 {
@@ -16,9 +17,7 @@ class OpportunitiesController extends Controller
         public function index()
         {
             $user = Auth::user();
-            $isAdmin = in_array('admin', $user->role_names);
-
-            if ($isAdmin) {
+            if (Gate::allows('is-admin-or-super-admin')) {
                 // Admin → See all opportunities
                 $opportunities = Opportunitie::with(['lead', 'user'])
                     ->orderBy('updated_at', 'desc')

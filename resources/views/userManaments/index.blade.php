@@ -34,12 +34,12 @@
                     <tbody class="text-gray-700 divide-y">
                         @foreach($users as $user)
                             <tr class="hover:bg-gray-50 group transition">
-                                <td class="p-3 relative">
+                                <td class="flex items-center justify-between p-3">
                                     <input type="checkbox" name="users_id[]" value="{{ $user->id }}" class=" user-checkbox w-4 h-4 text-indigo-600">
                                     
                                     <!-- Actions (edit/delete) -->
-                                    <div class="flex gap-1 items-center absolute top-2 left-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <x-editIcon :href="route('profile.edit', $user->id)" />
+                                    <div class="flex gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {{-- <x-editIcon :href="route('profile.edit', $user->id)" /> --}}
                                         <x-softDeleteIcon :action="route('profile.destroy', $user->id)" />
                                     </div>
                                 </td>
@@ -71,7 +71,7 @@
                                     @endphp
                                     @if (!empty($roles))
                                         @foreach ($roles as $role)
-                                            <span> {{ $role }}</span>
+                                            <span class="p-2 bg-indigo-100 text-indigo-700 text-sm  rounded-full"> {{ $role }}</span>
                                          @endforeach
                                     @else
                                         <span>-</span>

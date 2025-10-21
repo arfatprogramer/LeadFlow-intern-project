@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class leadsController extends Controller
 {
@@ -13,7 +14,7 @@ class leadsController extends Controller
      */
     public function index()
     {
-        if (in_array('admin', Auth::user()->role_names)) {
+        if (Gate::allows('is-admin-or-super-admin')) {
             $leads = Lead::orderBy('updated_at', 'desc')->get();
         } else {
             $leads = Lead::where('assigned_to', Auth::id())->orderBy('updated_at', 'desc')->get();

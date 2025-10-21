@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Gate;
 
 class contactControler extends Controller
 {
@@ -13,7 +13,7 @@ class contactControler extends Controller
     {
         $roles = Auth::user()->role_names;
 
-        if (array_intersect($roles, ['admin', 'manager'])) {
+        if (Gate::allows('is-admin-or-super-admin')) {
             $contacts = Contact::with(['user'])->orderBy('updated_at', 'desc')->get();
         } else {
             $contacts = Contact::where('assigned_to', Auth::id())->orderBy('updated_at', 'desc')->get();

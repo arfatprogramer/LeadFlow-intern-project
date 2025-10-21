@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        
     }
 
     /**
@@ -24,9 +24,33 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         Gate::define('is-admin', function ($user) {
-            return in_array($user->role, ['admin', 'manager']);
+      
+
+       // Gate for Super_Admin or Admin
+        Gate::define('is-admin-or-super-admin', function ($user) {
+            return $user->roles->pluck('role_name')->intersect(['Super_Admin', 'Admin'])->count() > 0;
         });
+        
+        // Manager
+        Gate::define('is-manager', function ($user) {
+            return $user->roles->pluck('role_name')->intersect(['Super_Admin', 'Admin','Manager'])->count() > 0;
+        });
+    
+        // Sales
+        Gate::define('is-sales', function ($user) {
+            return $user->roles->pluck('role_name')->intersect(['Super_Admin', 'Admin','Sales'])->count() > 0;
+        });
+        
+        // Support
+        Gate::define('is-support', function ($user) {
+            return $user->roles->pluck('role_name')->intersect(['Super_Admin', 'Admin','Support'])->count() > 0;
+        });
+        
+        // Test
+        Gate::define('is-test', function ($user) {
+            return $user->roles->pluck('role_name')->intersect(['Super_Admin', 'Admin','Test'])->count() > 0;
+        });
+
         
     }
 }

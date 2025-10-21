@@ -12,7 +12,7 @@ class UserManagement extends Controller
     public function index()
     {   
         $roles=Auth::user()->role_names;
-        if (array_intersect($roles,['admin'])) {
+        if (array_intersect($roles,['Admin'])) {
    
             $users= User::with(['roles'])->orderBy('updated_at',"desc")->get();
             // return($users);
@@ -36,17 +36,11 @@ class UserManagement extends Controller
     }
 
     public function updateRoles(Request $request, $id)
-        {
-            // Delete all existing roles for this user
-            Role::where('user_id', $id)->delete();
+        {   
+            $user = User::find($id);
+            $roles = Role::whereIn('role_name',$request->roles)->pluck('id');
+            $user->roles()->sync($roles); // replaces any existing roles
 
-            // Insert new roles
-            foreach ($request->roles ?? [] as $role) {
-                Role::create([
-                    'user_id' => $id,
-                    'role_name' => $role,
-                ]);
-            }
 
             return redirect()
                 ->route('employes.show', $id)

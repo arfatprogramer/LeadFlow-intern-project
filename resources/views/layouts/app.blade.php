@@ -17,9 +17,6 @@
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <!-- DataTables CSS -->
-        {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> --}}
-
         <!-- DataTables JS -->
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
@@ -84,12 +81,14 @@
                     <nav class="p-4 space-y-2 border-t border-white">
                         <x-nav-link :href="route('dashboard')"  :active="request()->routeIs('dashboard')">  🏠 Dashboard</x-nav-link>
                         <x-nav-link :href="route('leads.index')" :active="request()->routeIs('leads.index')">🧾 Leads</x-nav-link>
-                        <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.index')">👥 contacts</x-nav-link>
-                        <x-nav-link :href="route('opportunities.index')" :active="request()->routeIs('opportunities.index')">🎯 Opportunities</x-nav-link>
+                        @can('is-sales')
+                            <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.index')">👥 contacts</x-nav-link>
+                            <x-nav-link :href="route('opportunities.index')" :active="request()->routeIs('opportunities.index')">🎯 Opportunities</x-nav-link>
+                        @endcan
+                        @can('is-admin-or-super-admin')
+                        <x-nav-link class="whitespace-nowrap" :href="route('employes.index')" :active="request()->routeIs('employes.index')"> ⚙️ Uers Permissin</x-nav-link>
+                        @endcan
                         <x-nav-link :href="route('profile.show',auth()->id())" :active="request()->routeIs('profile.show')">🧑‍🤝‍🧑 Profile</x-nav-link>
-                    @if (in_array('admin', Auth::user()->role_names)) 
-                            <x-nav-link class="whitespace-nowrap" :href="route('employes.index')" :active="request()->routeIs('employes.index')"> ⚙️ Uers Permissin</x-nav-link>
-                    @endif
                     </nav>
                 </aside>
                 <!-- Page Content -->

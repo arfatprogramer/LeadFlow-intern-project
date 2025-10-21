@@ -7,16 +7,15 @@ use App\Models\Lead;
 use App\Models\Opportunitie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class DashBoardController extends Controller
 {
    public function index()
     { 
         try {
-            $user = Auth::user();
-            $isAdmin = in_array('admin', $user->role_names);
-            
-            if ($isAdmin) {
+            $user = Auth::user();            
+            if (Gate::allows('is-admin-or-super-admin')) {
                 // Admin → See all data
                 $leadsCount = Lead::count();
                 $contactsCount = Contact::count();

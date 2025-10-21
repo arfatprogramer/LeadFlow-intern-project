@@ -24,7 +24,8 @@ class LeadFactory extends Factory
             'company' => $this->faker->company(),
             'status' => $this->faker->randomElement(['New', 'Contacted', 'Qualified', 'Lost']),
             'source' => $this->faker->randomElement(['Website', 'Referral', 'Social Media', 'Advertisement']),
-            'assigned_to' => rand(1, 10),
+            'assigned_to' => rand(1, 5),
+            // 'user_id' => rand(1, 5),
             'notes' => $this->faker->paragraph(),
            
         ];

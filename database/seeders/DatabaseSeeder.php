@@ -15,22 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+       
+        $this->call([
+            RoleSedder::class,
+            UserSeeder::class,
+        ]);
 
-        User::factory(10)->create();
-        Role::factory()->create([
-            'role_name' => 'admin',
-            'user_id' => 1,
-        ]);
-         Role::factory()->create([
-            'role_name' => 'manager',
-            'user_id' => 2,
-        ]);
-         Role::factory()->create([
-            'role_name' => 'sales',
-            'user_id' => 3,
-        ]);
-        Lead::factory(50)->create();
+        // Lead::factory(10)->create();
 
     }
 }
