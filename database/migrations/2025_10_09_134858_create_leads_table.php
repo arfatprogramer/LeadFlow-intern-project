@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
 
             // Follow-up & Reminder
-            $table->datetimes('follow_up_date')->nullable();
+            $table->datetime('follow_up_date')->nullable();
         
             // Conversion
             $table->boolean('is_converted')->default(false);
