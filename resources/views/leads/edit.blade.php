@@ -11,7 +11,7 @@
         <!-- Basic Info -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <x-input-label for="first_name">First Name<span class="text-red-500">*</span></x-input-label>
+                <x-input-label for="first_name">First Name</x-input-label>
                 <x-text-input 
                     name="first_name"  
                     id="first_name"
@@ -23,7 +23,7 @@
             </div>
 
             <div>
-                <x-input-label for="last_name">Last Name</x-input-label>
+                <x-input-label for="last_name">Last Name <span class="text-red-500">*</span></x-input-label>
                 <x-text-input 
                     name="last_name"  
                     id="last_name" 
@@ -35,7 +35,7 @@
             </div>
 
             <div>
-                <x-input-label for="email" :value="'Email'" />
+                <x-input-label for="email" >Email <span class="text-red-500">*</span> </x-input-label>
                 <x-text-input 
                     name="email" 
                     id="email"  
@@ -88,7 +88,7 @@
                     name="source" 
                     class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
-                    <option value="">Select Source</option>
+                    <option value="">Select Source <span class="text-red-500">*</span></option>
                     @foreach (['Website', 'LinkedIn', 'Referral', 'Email Campaign'] as $source)
                         <option value="{{ $source }}" {{ old('source', $lead->source) == $source ? 'selected' : '' }}>
                             {{ $source }}
@@ -98,7 +98,7 @@
             </div>
 
             <div>
-                <x-input-label :value="'Assigned To'" />
+                <x-input-label for="assigned_to" > Assigned To <span class="text-red-500">*</span> </x-input-label>
                 <select 
                     name="assigned_to" 
                     class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"

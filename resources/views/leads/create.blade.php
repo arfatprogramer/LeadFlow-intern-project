@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
-        <h1 class="text-2xl font-bold text-blue-600 mb-6">Add New Lead</h1>
+        <h1 class="text-2xl font-bold text-blue-600 mb-6">Create New Lead</h1>
 
         <form action="{{ route('leads.store') }}" method="POST" class="space-y-6">
             @csrf
@@ -10,7 +10,7 @@
                 
                 <!-- First Name -->
                 <div>
-                    <x-input-label for="first_name">First Name <span class="text-red-500">*</span></x-input-label>
+                    <x-input-label for="first_name">First Name </x-input-label>
                     <x-text-input 
                         id="first_name" 
                         name="first_name" 
@@ -23,7 +23,7 @@
 
                 <!-- Last Name -->
                 <div>
-                    <x-input-label for="last_name">Last Name</x-input-label>
+                    <x-input-label for="last_name">Last Name <span class="text-red-500">*</span></x-input-label>
                     <x-text-input 
                         id="last_name" 
                         name="last_name" 
@@ -36,11 +36,11 @@
 
                 <!-- Email -->
                 <div>
-                    <x-input-label for="email">Email</x-input-label>
+                    <x-input-label for="email">Email <span class="text-red-500">*</span></x-input-label>
                     <x-text-input 
                         id="email" 
                         name="email" 
-                        type="email"
+                        type="text"
                         value="{{ old('email') }}" 
                         class="mt-1 block w-full"
                     />
@@ -88,14 +88,14 @@
 
                 <!-- Lead Source -->
                 <div>
-                    <x-input-label for="source">Lead Source</x-input-label>
+                    <x-input-label for="source">Lead Source <span class="text-red-500">*</span></x-input-label>
                     <select 
                         name="source" 
                         id="source" 
                         class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     >
-                        <option value="">Select Source</option>
-                        @foreach (['Website', 'LinkedIn', 'Referral', 'Email Campaign'] as $source)
+                        
+                        @foreach (['ByUser','Website', 'LinkedIn', 'Referral', 'Email Campaign'] as $source)
                             <option value="{{ $source }}" {{ old('source') == $source ? 'selected' : '' }}>
                                 {{ $source }}
                             </option>
@@ -106,9 +106,8 @@
 
                 <!-- Assigned To -->
                 <div>
-                    <x-input-label for="assigned_to">Assigned To</x-input-label>
+                    <x-input-label for="assigned_to">Assigned To <span class="text-red-500">*</span></x-input-label>
                     <select 
-                        required
                         name="assigned_to" 
                         id="assigned_to"
                         class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -136,13 +135,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Follow-up Date -->
                 <div>
-                    <x-input-label for="follow_up_date">Follow-up Date</x-input-label>
+                    <x-input-label for="follow_up_date">Follow-up Date-Time</x-input-label>
                     <input 
-                        type="date" 
+                        class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        type="datetime-local" 
                         id="follow_up_date" 
                         name="follow_up_date" 
-                        value="{{ old('follow_up_date', $today) }}"
-                        class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        value="{{ old('follow_up_date',$today)}}"
                     >
                 </div>
             </div>
@@ -166,7 +165,7 @@
                     type="submit" 
                     class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md shadow transition-colors"
                 >
-                    Save Lead
+                    Save
                 </button>
             </div>
         </form>

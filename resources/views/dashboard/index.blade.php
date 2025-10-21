@@ -56,8 +56,8 @@
                         <a href="{{ route('leads.show',$lead->id) }}">
                             <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl hover:bg-blue-100 transition">
                             <p class="font-semibold">{{ $lead->first_name }} {{ $lead->last_name }}</p>
-                            <p class="text-sm text-gray-500">Assigned to: {{ $lead->assignedUser->name ?? 'N/A' }}</p>
-                            <p class="text-sm text-gray-500">Next Follow-up: {{ $lead->next_followup ?? 'N/A' }}</p>
+                            <p class="text-sm text-gray-500">Assigned to: {{ $lead->users->name ?? 'N/A' }}</p>
+                            <p class="text-sm text-gray-500">Next Follow-up: {{ $lead->follow_up_date ?? 'N/A' }}</p>
                         </div>
                         </a>
                         @endforeach

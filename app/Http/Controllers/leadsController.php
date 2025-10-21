@@ -38,19 +38,19 @@ class leadsController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'email' => 'nullable|email',
+            'last_name' => 'required|string|max:255',
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Lead::class],
+            'assigned_to' => 'required|email',
+            'email' => 'required|email',
             'phone' => 'nullable|string|max:20',
         ]);
 
         Lead::create([
             ...$validated,
-            'last_name' => $request->last_name,
             'company' => $request->company,
             'designation' => $request->designation,
             'source' => $request->source,
-            'status' => $request->status ?? 'New',
             'notes' => $request->notes,
-            'assigned_to' => $request->assigned_to,
             'created_by' => Auth::id(),
             'follow_up_date' => $request->follow_up_date,
         ]);
@@ -83,6 +83,16 @@ class leadsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        $validated=$request->validate([
+             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Lead::class],
+            'assigned_to' => 'required|email',
+            'email' => 'required|email',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
         $lead = Lead::findOrFail($id)->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,

@@ -31,13 +31,11 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
 
             // Follow-up & Reminder
-            $table->date('follow_up_date')->nullable();
-            $table->time('reminder_time')->nullable();
-
+            $table->datetimes('follow_up_date')->nullable();
+        
             // Conversion
             $table->boolean('is_converted')->default(false);
             $table->dateTime('converted_at')->nullable();
-            // $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('set null');
 
             // Timestamps & Soft Delete
             $table->timestamps();

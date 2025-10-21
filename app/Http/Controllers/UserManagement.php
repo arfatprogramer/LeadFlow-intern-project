@@ -6,13 +6,14 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserManagement extends Controller
 {
     public function index()
     {   
         $roles=Auth::user()->role_names;
-        if (array_intersect($roles,['Admin'])) {
+        if (Gate::allows('is-admin-or-super-admin')) {
    
             $users= User::with(['roles'])->orderBy('updated_at',"desc")->get();
             // return($users);
@@ -31,7 +32,7 @@ class UserManagement extends Controller
    public function editRoles($id)
     {
         $user = User::with('roles')->find($id);
-        $roles = Role::select('role_name')->distinct()->get();
+        $roles = Role::where('role_name','!=','Super_Admin')->get();
         return view('userManaments.edit-roles', compact('user', 'roles'));
     }
 
