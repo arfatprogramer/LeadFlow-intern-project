@@ -88,3 +88,15 @@ php artisan migrate --seed
 Serve the application:
 
 composer run dev
+
+```
+Use Username
+1) super@leadflow.com
+2) admin@leadflow.com
+3) manager@leadflow.com
+4) sales@leadflow.com
+5) support@leadflow.com
+6) test@leadflow.com
+
+Password It Work For All 
+leadflow
