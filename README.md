@@ -60,20 +60,14 @@ LeadFlow is a CRM demo project built with **Laravel**. It helps manage **leads, 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/leadflow.git
-cd leadflow
-
+git clone https://github.com/arfatprogramer/LeadFlow-intern-project.git
+ cd LeadFlow-intern-project
 
 
 Install PHP dependencies:
 
 composer install
 
-
-Install frontend dependencies:
-
-npm install
-npm run dev
 
 
 Copy .env.example to .env and configure your database:
@@ -93,4 +87,4 @@ php artisan migrate --seed
 
 Serve the application:
 
-php artisan serve
+composer run dev
